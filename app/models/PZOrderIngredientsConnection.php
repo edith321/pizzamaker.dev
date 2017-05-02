@@ -19,6 +19,10 @@ class PZOrderIngredientsConnection extends Model
      */
     protected $fillable = ['order_id', 'ingredient_id'];
 
+    /**
+     * Returns ingredients data
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function IngredientsData()
     {
         return $this->hasOne(PZIngredients::class, 'id', 'ingredient_id');

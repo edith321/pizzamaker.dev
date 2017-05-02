@@ -3,35 +3,30 @@
 <body>
 
 {!! Form::open(['url' => route('app.orders')]) !!}
-{{Form::label('name', 'Name')}}
+{{Form::label('name', 'Pavadinimas')}}
 {{Form::text('name')}}
 <br/>
-{{Form::label('phone', 'Phone')}}
+{{Form::label('phone', 'Telefonas')}}
 {{Form::text('phone')}}
 <br/>
-{{Form::label('address', 'Address')}}
+{{Form::label('address', 'Adresas')}}
 {{Form::text('address')}}
 <br/>
-{{Form::label('base', 'Base')}}
+{{Form::label('base', 'Padas')}}
 {{Form::select('base', $base)}}
 <br/>
-{{Form::label('cheese', 'Cheese')}}
+{{Form::label('cheese', 'Sūris')}}
+{{Form::select('cheese', $cheese, 1)}}
 <br/>
-@foreach($cheese as $chees => $chee)
-    {{Form::checkbox('cheese[]', $chees) }}{{$chee}}
-    <br/>
-@endforeach
+{{Form::label('ingredients', 'Ingridientai')}}
 <br/>
-{{Form::label('ingredients', 'Ingredients')}}
-<br/>
-
 @foreach($ingredients as $ingredient => $ingredien)
     {{Form::checkbox('ingredients[]', $ingredient) }}{{$ingredien}}
     <br/>
 @endforeach
 <br/>
 <br/>
-{{Form::submit('Submit')}}
+{{Form::submit('Užsakyti')}}
 {!! Form::close() !!}
 
 </body>
