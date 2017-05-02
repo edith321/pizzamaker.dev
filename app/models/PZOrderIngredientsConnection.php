@@ -18,4 +18,9 @@ class PZOrderIngredientsConnection extends Model
      * @var array
      */
     protected $fillable = ['order_id', 'ingredient_id'];
+
+    public function IngredientsData()
+    {
+        return $this->hasOne(PZIngredients::class, 'id', 'ingredient_id');
+    }
 }

@@ -18,4 +18,9 @@ class PZOrderCheeseConnection extends Model
      * @var array
      */
     protected $fillable = ['order_id', 'cheese_id'];
+
+    public function cheeseData()
+    {
+        return $this->hasOne(PZCheese::class, 'id', 'cheese_id');
+    }
 }
