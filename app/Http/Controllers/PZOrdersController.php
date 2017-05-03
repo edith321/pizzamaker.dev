@@ -39,13 +39,13 @@ class PZOrdersController extends Controller
             'phone' => $data['phone'],
             'address' => $data['address'],
             'base_id' => $data['base'],
+            'comments' => $data['comments']
         ));
 
         $record['base'] = PZBase::pluck('name', 'id')->toArray();
         $record['cheese'] = PZCheese::pluck('name', 'id')->toArray();
         $record['ingredients'] = PZIngredients::pluck('name', 'id')->toArray();
 
-        $record->orderCheeseConnection()->sync($data['cheese']);
         $record->orderIngredientConnection()->sync($data['ingredients']);
 
         return view('order', $record->toArray());

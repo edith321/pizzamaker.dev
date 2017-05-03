@@ -16,8 +16,7 @@ class PZOrders extends PZCoreModel
      * Fields which will be manipulated
      * @var array
      */
-    protected $fillable = ['id', 'name', 'phone', 'address', 'base_id'];
-
+    protected $fillable = ['id', 'name', 'phone', 'address', 'base_id', 'comments'];
     /**
      * Returns cheese data
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
