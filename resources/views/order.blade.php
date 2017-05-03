@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <body>
-
+<h1 style="color: darkred;">Pizza Maker</h1>
+<h2>Susikurkite norimą picą patys!</h2>
 @if(isset($name))
     <div style="background-color: #1f648b; color: greenyellow"> Jūsų užsakytos picos kalorijų kiekis
         @foreach($calories as $calorie)
@@ -20,24 +21,29 @@
 {{Form::label('address', 'Adresas')}}
 {{Form::text('address')}}
 <br/>
-{{Form::label('base', 'Padas')}}
+<br/>
+{{Form::label('base', 'Picos padas:')}}
+<br/>
 {{Form::select('base', $base)}}
+<br/>
+<br/>
+{{Form::label('cheese', 'Sūris:')}}
 <br/>
 @foreach($cheese as $chees => $chee)
     {{Form::checkbox('cheese[]', $chees) }}{{$chee}}
     <br/>
 @endforeach
 <br/>
-{{Form::label('ingredients', 'Ingridientai (ne daugiau, negu 3)')}}
+{{Form::label('ingredients', 'Ingridientai (ne daugiau, negu 3):')}}
 <br/>
 @foreach($ingredients as $ingredient => $ingredien)
-    {{Form::checkbox('ingredients[]', $ingredient) }}{{$ingredien}}
+    {{Form::checkbox('ingredients[]', $ingredient, null, ['class' => 'ingredients']) }}{{$ingredien}}
     <br/>
 @endforeach
 <br/>
-{{Form::label('comments', 'Komentarai')}}
+{{Form::label('comments', 'Komentarai:')}}
 <br/>
-{{Form::textarea('comments')}}
+{{Form::textarea('comments', null, ['size' => '30x5'])}}
 
 <br/>
 {{Form::submit('Užsakyti')}}
@@ -45,7 +51,7 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
-    $('input[type="checkbox"]').click(function(event) {
+    $('input[class="ingredients"]').click(function(event) {
         if (this.checked && $('input:checked').length > 3) {
             event.preventDefault();
         }
