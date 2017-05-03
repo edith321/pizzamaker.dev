@@ -2,6 +2,14 @@
 <html lang="en">
 <body>
 
+@if(isset($name))
+    <div style="background-color: #1f648b; color: greenyellow"> Jūsų užsakytos picos kalorijų kiekis
+        @foreach($calories as $calorie)
+            {{$calorie}}
+    @endforeach
+    </div>
+@endif
+
 {!! Form::open(['url' => route('app.orders')]) !!}
 {{Form::label('name', 'Vardas Pavardė')}}
 {{Form::text('name')}}

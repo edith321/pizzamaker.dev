@@ -12,6 +12,8 @@ class PZBase extends PZCoreModel
      */
     protected $table = 'pz_base';
 
+
+
     /**
      * Fields which will be manipulated
      * @var array

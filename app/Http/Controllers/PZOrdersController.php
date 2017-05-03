@@ -20,6 +20,7 @@ class PZOrdersController extends Controller
         $data['base'] = PZBase::pluck('name', 'id')->toArray();
         $data['cheese'] = PZCheese::pluck('name', 'id')->toArray();
         $data['ingredients'] = PZIngredients::pluck('name', 'id')->toArray();
+        $data['calories'] = PZCheese::pluck('calories', 'id')->toArray();
 
         return view('order', $data);
     }
@@ -47,6 +48,7 @@ class PZOrdersController extends Controller
         $record['ingredients'] = PZIngredients::pluck('name', 'id')->toArray();
 
         $record->orderIngredientConnection()->sync($data['ingredients']);
+        $record['calories'] = PZCheese::pluck('calories', 'id')->toArray();
 
         return view('order', $record->toArray());
     }
@@ -63,12 +65,24 @@ class PZOrdersController extends Controller
     }
 
     /**
+     * Returns orders data
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     *
+     */
+    public function showData ()
+    {
+        return PZOrders::with(['orderCheeseConnectionData'])->get();
+    }
+
+    /**
      * Display the specified resource.
      * GET /pzorders/{id}
      *
      * @param  int $id
      * @return Response
      */
+
+
     public function show($id)
     {
         //

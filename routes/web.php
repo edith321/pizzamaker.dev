@@ -32,3 +32,6 @@ Route::group(['prefix' => 'generateOrders'], function () {
     Route::get('/orders', ['uses' => 'PZOrdersController@index']);
     Route::post('/orders', ['as' => 'app.orders', 'uses' => 'PZOrdersController@create']);
 });
+Route::group(['prefix' => 'showOrders'], function () {
+    Route::get('/orders', ['uses' => 'PZOrdersController@showData']);
+});

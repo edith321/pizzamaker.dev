@@ -37,4 +37,10 @@ class PZOrders extends PZCoreModel
     {
         return $this->belongsToMany(PZOrderIngredientsConnection::class, 'pz_order_ingredient_connection', 'order_id', 'ingredient_id');
     }
+
+
+    public function orderCheeseConnectionData()
+    {
+        return $this->hasMany(PZOrderCheeseConnection::class, 'order_id', 'id')->with(['cheeseData']);
+    }
 }
