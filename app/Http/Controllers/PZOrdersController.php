@@ -24,7 +24,6 @@ class PZOrdersController extends Controller
 
         return view('order', $data);
     }
-
     /**
      * Show the form for creating a new resource.
      * GET /pzorders/create
@@ -52,6 +51,22 @@ class PZOrdersController extends Controller
 
         return view('order', $record->toArray());
     }
+    /**
+     * Returns orders data
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     *
+     */
+    public function showData ()
+    {
+        return PZOrders::with(['orderCheeseConnectionData'])->get();
+    }
+
+    public function countCalories(){
+        $data[] = PZCheese::pluck('calories');
+
+        return array_sum($data);
+
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -62,16 +77,6 @@ class PZOrdersController extends Controller
     public function store()
     {
         //
-    }
-
-    /**
-     * Returns orders data
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
-     *
-     */
-    public function showData ()
-    {
-        return PZOrders::with(['orderCheeseConnectionData'])->get();
     }
 
     /**

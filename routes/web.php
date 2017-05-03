@@ -35,3 +35,6 @@ Route::group(['prefix' => 'generateOrders'], function () {
 Route::group(['prefix' => 'showOrders'], function () {
     Route::get('/orders', ['uses' => 'PZOrdersController@showData']);
 });
+
+
+Route::get('/calories', ['uses' => 'PZOrdersController@countCalories']);
