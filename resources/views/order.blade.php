@@ -28,7 +28,7 @@
     <br/>
 @endforeach
 <br/>
-{{Form::label('ingredients', 'Ingridientai')}}
+{{Form::label('ingredients', 'Ingridientai (ne daugiau, negu 3)')}}
 <br/>
 @foreach($ingredients as $ingredient => $ingredien)
     {{Form::checkbox('ingredients[]', $ingredient) }}{{$ingredien}}
@@ -42,6 +42,17 @@
 <br/>
 {{Form::submit('Užsakyti')}}
 {!! Form::close() !!}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $('input[type="checkbox"]').click(function(event) {
+        if (this.checked && $('input:checked').length > 3) {
+            event.preventDefault();
+        }
+    });
+</script>
+
+
 
 </body>
 </html>
