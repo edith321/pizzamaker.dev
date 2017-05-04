@@ -17,12 +17,18 @@ class PZOrdersController extends Controller
      */
     public function index()
     {
-        $data['base'] = PZBase::pluck('name', 'id')->toArray();
-        $data['cheese'] = PZCheese::pluck('name', 'id')->toArray();
-        $data['ingredients'] = PZIngredients::pluck('name', 'id')->toArray();
-        $data['calories'] = PZCheese::pluck('calories', 'id')->toArray();
+        return PZOrders::with(['baseData', 'orderCheeseConnectionData', 'orderIngredientsConnectionData'])->get();
 
-        return view('order', $data);
+    }
+    public function showAllOrders()
+    {
+        $data = [];
+        $data['orders'] = PZOrders::with(['baseData', 'orderCheeseConnectionData', 'orderIngredientsConnectionData'])->get()->toArray();
+
+        /*$data['cheese'] = PZCheese::pluck('name', 'id')->toArray();
+        $data['ingredients'] = PZIngredients::pluck('name', 'id')->toArray();*/
+       return view('allOrders', $data);
+
     }
     /**
      * Show the form for creating a new resource.
@@ -31,6 +37,40 @@ class PZOrdersController extends Controller
      * @return Response
      */
     public function create()
+    {
+        $data['base'] = PZBase::pluck('name', 'id')->toArray();
+        $data['cheese'] = PZCheese::pluck('name', 'id')->toArray();
+        $data['ingredients'] = PZIngredients::pluck('name', 'id')->toArray();
+        $data['calories'] = PZCheese::pluck('calories', 'id')->toArray();
+
+        return view('order', $data);
+
+    }
+    /**
+     * Returns orders data
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     *
+     */
+    public function showData ()
+    {
+        return PZOrders::with(['orderCheeseConnectionData'])->get();
+    }
+
+    public function countCalories()
+    {
+        $data[] = PZCheese::pluck('calories');
+
+        return array_sum($data);
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * POST /pzorders
+     *
+     * @return Response
+     */
+    public function store()
     {
         $data = request()->all();
 
@@ -47,36 +87,14 @@ class PZOrdersController extends Controller
         $record['ingredients'] = PZIngredients::pluck('name', 'id')->toArray();
 
         $record->orderIngredientConnection()->sync($data['ingredients']);
+        $record->orderCheeseConnection()->sync($data['cheese']);
         $record['calories'] = PZCheese::pluck('calories', 'id')->toArray();
 
-        return view('order', $record->toArray());
-    }
-    /**
-     * Returns orders data
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
-     *
-     */
-    public function showData ()
-    {
-        return PZOrders::with(['orderCheeseConnectionData'])->get();
-    }
-
-    public function countCalories(){
-        $data[] = PZCheese::pluck('calories');
-
-        return array_sum($data);
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     * POST /pzorders
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        //
+        if($record['ingredients'] > 3){
+            return 'Negalima pasirinkti daugiau negu 3 ingridientu';
+        } else {
+            return view('order', $record->toArray());
+        }
     }
 
     /**

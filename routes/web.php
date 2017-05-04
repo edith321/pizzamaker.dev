@@ -11,11 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
 Route::group(['prefix' => 'generateCheese'], function () {
     Route::get('/cheese', ['uses' => 'PZCheeseController@index']);
     Route::post('/cheese', ['as' => 'app.cheese', 'uses' => 'PZCheeseController@create']);
@@ -28,13 +23,16 @@ Route::group(['prefix' => 'generateIngredients'], function () {
     Route::get('/ingredients', ['uses' => 'PZIngredientsController@index']);
     Route::post('/ingredients', ['as' => 'app.ingredients', 'uses' => 'PZIngredientsController@create']);
 });
-Route::group(['prefix' => 'generateOrders'], function () {
-    Route::get('/orders', ['uses' => 'PZOrdersController@index']);
-    Route::post('/orders', ['as' => 'app.orders', 'uses' => 'PZOrdersController@create']);
-});
+
 Route::group(['prefix' => 'showOrders'], function () {
     Route::get('/orders', ['uses' => 'PZOrdersController@showData']);
 });
 
-
 Route::get('/calories', ['uses' => 'PZOrdersController@countCalories']);
+Route::get('/allOrders', ['uses' => 'PZOrdersController@showAllOrders']);
+
+Route::group(['prefix' => 'pizza'], function () {
+    Route::get('/', ['uses' => 'PZOrdersController@index']);
+    Route::get('/create', ['uses' => 'PZOrdersController@create']);
+    Route::post('/create', ['as' => 'app.orders', 'uses' => 'PZOrdersController@store']);
+});
