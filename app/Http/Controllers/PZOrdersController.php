@@ -18,7 +18,6 @@ class PZOrdersController extends Controller
     public function index()
     {
         return PZOrders::with(['baseData', 'orderCheeseConnectionData', 'orderIngredientsConnectionData'])->get();
-
     }
     public function showAllOrders()
     {
@@ -28,7 +27,6 @@ class PZOrdersController extends Controller
         /*$data['cheese'] = PZCheese::pluck('name', 'id')->toArray();
         $data['ingredients'] = PZIngredients::pluck('name', 'id')->toArray();*/
        return view('allOrders', $data);
-
     }
     /**
      * Show the form for creating a new resource.
@@ -55,7 +53,7 @@ class PZOrdersController extends Controller
         return PZOrders::with(['orderCheeseConnectionData'])->get();
     }
 
-    public function countCalories()
+    public function countCalories($data)
     {
         $data['pizzaOrders'] = PZOrders::with(['orderIngredientsConnectionData', 'orderCheeseConnectionData', 'baseData'])->get()->toArray();
 
@@ -81,7 +79,6 @@ class PZOrdersController extends Controller
        $totalCalories = $ingredientsCalories + $cheeseCalories + $baseCalories;
 
         return $totalCalories;
-
     }
 
     /**
@@ -94,13 +91,17 @@ class PZOrdersController extends Controller
     {
         $data = request()->all();
 
+        if(sizeOf($data['ingredients']) > 3) {
+            return 'Negalima pasirinkti daugiau negu 3 ingridientus';
+        } else {
+
         $record = PZOrders::create(array(
             'name' => $data['name'],
             'phone' => $data['phone'],
             'address' => $data['address'],
             'base_id' => $data['base'],
             'comments' => $data['comments'],
-            'total_calories' => $this->countCalories($data['total_calories']),
+            /*'total_calories' => $this->countCalories($data),*/
         ));
 
         $record['base'] = PZBase::pluck('name', 'id')->toArray();
@@ -112,11 +113,7 @@ class PZOrdersController extends Controller
         $record->orderIngredientConnection()->sync($data['ingredients']);
 
         return view('order', $record->toArray());
-
-        /*if($record['ingredients'] > 3){
-            return 'Negalima pasirinkti daugiau negu 3 ingridientu';
-        } else {
-        }*/
+        }
     }
 
     /**
