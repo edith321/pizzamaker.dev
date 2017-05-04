@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PZOrderCheeseConnection extends Model
 {
      public $updated_at = false;
+    protected $hidden = ['created_at', 'id'];
     /**
      * Table name
      * @var string

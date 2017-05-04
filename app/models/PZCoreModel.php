@@ -10,7 +10,7 @@ class PZCoreModel extends Model
 {
     use SoftDeletes;
     public $incrementing = false;
-    protected $hidden = ['count', 'deleted_at', 'updated_at', 'created_at'];
+    protected $hidden = ['deleted_at', 'updated_at', 'created_at', 'id'];
 
     /**
      * Boot function from laravel.
