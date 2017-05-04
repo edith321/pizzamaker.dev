@@ -5,9 +5,7 @@
 <h2>Susikurkite norimą picą patys!</h2>
 @if(isset($name))
     <div style="background-color: #1f648b; color: greenyellow"> Jūsų užsakytos picos kalorijų kiekis
-        @foreach($calories as $calorie)
-            {{$calorie}}
-    @endforeach
+        {{$total_calories}}
     </div>
 @endif
 
@@ -37,7 +35,7 @@
 {{Form::label('ingredients', 'Ingridientai (ne daugiau, negu 3):')}}
 <br/>
 @foreach($ingredients as $ingredient => $ingredien)
-    {{Form::checkbox('ingredients[]', $ingredient, null, ['class' => 'ingredients']) }}{{$ingredien}}
+    {{Form::checkbox('ingredients[]', $ingredient)}}{{$ingredien}}
     <br/>
 @endforeach
 <br/>
@@ -49,14 +47,7 @@
 {{Form::submit('Užsakyti')}}
 {!! Form::close() !!}
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>
-    $('input[class="ingredients"]').click(function(event) {
-        if (this.checked && $('input:checked').length > 3) {
-            event.preventDefault();
-        }
-    });
-</script>
+
 
 
 
