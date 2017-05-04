@@ -44,23 +44,43 @@ class PZOrdersController extends Controller
         $data['calories'] = PZCheese::pluck('calories', 'id')->toArray();
 
         return view('order', $data);
-
     }
     /**
      * Returns orders data
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      *
      */
-    public function showData ()
+    public function showData()
     {
         return PZOrders::with(['orderCheeseConnectionData'])->get();
     }
 
     public function countCalories()
     {
-        $data[] = PZCheese::pluck('calories');
+        $data['pizzaOrders'] = PZOrders::with(['orderIngredientsConnectionData', 'orderCheeseConnectionData', 'baseData'])->get()->toArray();
 
-        return array_sum($data);
+        foreach($data['pizzaOrders'] as $pizza)
+        {
+            foreach($pizza['order_ingredients_connection_data'] as $ingredients)
+            {
+                $ingredientsCalories = $ingredients['ingredients_data']['calories'];
+            }
+        }
+        foreach($data['pizzaOrders'] as $pizza)
+        {
+            foreach($pizza['order_cheese_connection_data'] as $cheese)
+            {
+                $cheeseCalories = $cheese['cheese_data']['calories'];
+            }
+        }
+        foreach($data['pizzaOrders'] as $pizza)
+        {
+            $baseCalories = $pizza['base_data']['calories'];
+        }
+
+       $totalCalories = $ingredientsCalories + $cheeseCalories + $baseCalories;
+
+        return $totalCalories;
 
     }
 
@@ -79,22 +99,24 @@ class PZOrdersController extends Controller
             'phone' => $data['phone'],
             'address' => $data['address'],
             'base_id' => $data['base'],
-            'comments' => $data['comments']
+            'comments' => $data['comments'],
+            'total_calories' => $this->countCalories($data['total_calories']),
         ));
 
         $record['base'] = PZBase::pluck('name', 'id')->toArray();
         $record['cheese'] = PZCheese::pluck('name', 'id')->toArray();
         $record['ingredients'] = PZIngredients::pluck('name', 'id')->toArray();
-
-        $record->orderIngredientConnection()->sync($data['ingredients']);
-        $record->orderCheeseConnection()->sync($data['cheese']);
         $record['calories'] = PZCheese::pluck('calories', 'id')->toArray();
 
-        if($record['ingredients'] > 3){
+        $record->orderCheeseConnection()->sync($data['cheese']);
+        $record->orderIngredientConnection()->sync($data['ingredients']);
+
+        return view('order', $record->toArray());
+
+        /*if($record['ingredients'] > 3){
             return 'Negalima pasirinkti daugiau negu 3 ingridientu';
         } else {
-            return view('order', $record->toArray());
-        }
+        }*/
     }
 
     /**
