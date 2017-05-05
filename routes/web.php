@@ -35,4 +35,10 @@ Route::group(['prefix' => 'pizza'], function () {
     Route::get('/', ['uses' => 'PZOrdersController@index']);
     Route::get('/create', ['uses' => 'PZOrdersController@create']);
     Route::post('/create', ['as' => 'app.orders', 'uses' => 'PZOrdersController@store']);
+
+    Route::group(['prefix' => 'service'], function () {
+        Route::get('{id}', ['uses' => 'PZOrdersController@show']);
+        Route::get('{id}/edit', ['as' => 'app.orderEdit', 'uses' => 'PZOrdersController@edit']);
+        Route::put('{id}/edit', ['as' => 'app.OrderEdit', 'uses' => 'PZOrdersController@update']);
+    });
 });
