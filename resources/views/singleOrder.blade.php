@@ -20,5 +20,6 @@
 
     </ul>
         <a href="{{route('app.orderEdit', $order['id'])}}">Kesiti užsakymą</a>
+        <a data-method="delete" href="{{route('app.orderDelete', $order['id'])}}">Ištrinti užsakymą</a>
 </body>
 </html>

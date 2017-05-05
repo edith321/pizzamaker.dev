@@ -142,6 +142,9 @@ class PZOrdersController extends Controller
      */
     public function edit($id)
     {
+
+
+
         $data['base'] = PZBase::pluck('name', 'id')->toArray();
         $data['cheese'] = PZCheese::pluck('name', 'id')->toArray();
         $data['ingredients'] = PZIngredients::pluck('name', 'id')->toArray();
@@ -170,7 +173,29 @@ class PZOrdersController extends Controller
      */
     public function update($id)
     {
-        //
+        $record = PZOrders::find($id);
+
+        $data = request()->all();
+
+        $record->update(array(
+            'name' => $data['name'],
+            'phone' => $data['phone'],
+            'address' => $data['address'],
+            'base_id' => $data['base'],
+            'comments' => $data['comments'],
+            /*'total_calories' => $this->countCalories($data),*/
+        ));
+
+        $record['base'] = PZBase::pluck('name', 'id')->toArray();
+        $record['cheese'] = PZCheese::pluck('name', 'id')->toArray();
+        $record['ingredients'] = PZIngredients::pluck('name', 'id')->toArray();
+        $record['calories'] = PZCheese::pluck('calories', 'id')->toArray();
+
+        $record->orderCheeseConnection()->sync($data['cheese']);
+        $record->orderIngredientConnection()->sync($data['ingredients']);
+
+        return view('order', $record->toArray());
+
     }
 
     /**
@@ -181,8 +206,10 @@ class PZOrdersController extends Controller
      * @return Response
      */
     public function destroy($id)
-    {
-        //
+    { ////// reikia web.php get prie delete'o pakeist i delete, ir ideti jquery, paziuret kaip pas aivara, prie nuorodos prideti klase jquerio 
+        $data['order'] = PZOrders::with(['baseData', 'orderCheeseConnectionData', 'orderIngredientsConnectionData'])->find($id)->toArray();
+
+        PZOrders::destroy($data['order']);
     }
 
 }

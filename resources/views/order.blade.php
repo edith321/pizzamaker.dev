@@ -5,7 +5,7 @@
 <h2>Susikurkite norimą picą patys!</h2>
 @if(isset($name))
     <div style="background-color: #1f648b; color: greenyellow"> Jūsų užsakytos picos kalorijų kiekis
-        {{$total_calories}}
+
     </div>
 @endif
 

@@ -39,6 +39,7 @@ Route::group(['prefix' => 'pizza'], function () {
     Route::group(['prefix' => 'service'], function () {
         Route::get('{id}', ['uses' => 'PZOrdersController@show']);
         Route::get('{id}/edit', ['as' => 'app.orderEdit', 'uses' => 'PZOrdersController@edit']);
-        Route::put('{id}/edit', ['as' => 'app.OrderEdit', 'uses' => 'PZOrdersController@update']);
+        Route::post('{id}/edit', ['as' => 'app.OrderEdit', 'uses' => 'PZOrdersController@update']);
+        Route::get('{id}', ['as' => 'app.orderDelete', 'uses' => 'PZOrdersController@destroy']);
     });
 });
