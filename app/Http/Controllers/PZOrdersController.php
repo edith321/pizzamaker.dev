@@ -127,7 +127,10 @@ class PZOrdersController extends Controller
 
     public function show($id)
     {
-        //
+
+        $data['order'] = PZOrders::with(['baseData', 'orderCheeseConnectionData', 'orderIngredientsConnectionData'])->find($id)->toArray();
+        return view('singleOrder', $data);
+
     }
 
     /**
@@ -139,7 +142,23 @@ class PZOrdersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data['base'] = PZBase::pluck('name', 'id')->toArray();
+        $data['cheese'] = PZCheese::pluck('name', 'id')->toArray();
+        $data['ingredients'] = PZIngredients::pluck('name', 'id')->toArray();
+        $data['calories'] = PZCheese::pluck('calories', 'id')->toArray();
+
+
+        $data['id'] = $id;
+
+        $data['order'] = PZOrders::with(['baseData', 'orderCheeseConnectionData', 'orderIngredientsConnectionData'])->find($id)->toArray();
+
+        $data['ingredientID'] = [];
+        foreach ($data['order']['order_ingredients_connection_data'] as $order) {
+
+            array_push($data['ingredientID'], $order['ingredient_id']);
+        }
+
+        return view('orderEdit', $data);
     }
 
     /**
